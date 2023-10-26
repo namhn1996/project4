@@ -1,0 +1,207 @@
+.home-banner {
+  max-width: 100%;
+  text-align: center;
+  margin-top: 10px;
+}
+.home-banner img {
+  margin: 0 auto;
+  width: 70%;
+}
+.home-banner .banner-black {
+  margin: 0 auto;
+  margin-top: 30px;
+}
+
+.flexContain {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  min-width: 60%;
+  max-width: 60%;
+  margin: 0 auto;
+  gap: 5px;
+}
+.flexContain a {
+  width: 130px;
+}
+.flexContain img {
+  width: 100%;
+  margin: 10px 0;
+}
+.product-list-title {
+  text-align: center;
+  margin-top: 20px;
+  border: 1px solid red;
+  border-radius: 15px;
+}
+.product-list {
+  display: inline;
+  flex-wrap: wrap;
+}
+.products {
+  display: inline-block;
+  gap: 15px;
+  transition-duration: 0.1s;
+  transform: scale(0.9);
+}
+.products img {
+  margin: 0 auto;
+  width: 100%;
+}
+.products:hover {
+  cursor: pointer;
+  transform: scale(1);
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3); /* Thêm bóng đổ */
+  border: 1px solid #ccc; /* Thêm viền */
+  background-color: #f5f5f5; /* Thêm màu nền */
+  /* Thêm các thuộc tính khác mà bạn muốn thay đổi khi hover vào đây */
+}
+
+/* .addCart-home {
+  bottom: 5px;
+  right: 5px;
+} */
+.addCart-btn {
+  margin-top: 10px;
+  width: 100%;
+}
+.addCart-btn:hover {
+  background-color: #a70f28;
+  color: #f5f5f5;
+}
+
+.labelCart-home {
+  position: absolute;
+  display: inline-block;
+  top: 290px;
+  left: 2px;
+  font-size: 12px;
+  color: #f83131;
+  font-weight: 600;
+  background-image: linear-gradient(90deg, #e6d6bd 0%, #e99d9d 100%);
+  border-radius: 10px;
+  padding: 1px 7px;
+  padding-left: 0;
+  padding-right: 10px;
+  transition-duration: 0.1s;
+  transform: scale(0.9);
+}
+.labelCart-home:hover {
+  cursor: pointer;
+  transform: scale(1.1);
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3); /* Thêm bóng đổ */
+}
+.star-home {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 5%;
+}
+.star-home i {
+  color: rgb(235, 235, 50);
+  font-size: 20px;
+}
+.star-home span {
+  color: rgb(57, 65, 75);
+  font-size: 18px;
+  font-weight: 500;
+}
+:where(.css-dev-only-do-not-override-byeoj0).ant-card .ant-card-meta-title {
+  font-size: 25px;
+  font-weight: 700;
+}
+:where(.css-dev-only-do-not-override-byeoj0).ant-card
+  .ant-card-meta-description {
+  font-size: 25px;
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: #f83131;
+  padding-right: 100%;
+}
+:where(.css-dev-only-do-not-override-byeoj0).ant-card .ant-card-cover img {
+  transition-duration: 0.1s;
+  transform: scale(0.8);
+}
+:where(.css-dev-only-do-not-override-byeoj0).ant-card
+  .ant-card-cover
+  img:hover {
+  transform: scale(1);
+}
+.last-product {
+  background: #dae2dc;
+  /* overflow: hidden; */
+  color: #333;
+  list-style: none;
+  padding: 0 auto;
+  justify-content: center;
+  flex-direction: row;
+  width: 100%;
+}
+.last-product li {
+  width: 19%;
+  display: inline-block;
+  box-sizing: border-box;
+  padding: 5px 10px;
+  line-height: 20px;
+  border-right: solid 1px #bbb;
+  margin: 5px 0;
+}
+input[disabled] {
+  background-color: white !important;
+}
+.form-floating > .form-control:disabled ~ label::after,
+.form-floating > :disabled ~ label::after {
+  background-color: transparent !important;
+}
+.form-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.form-footer .back {
+  text-decoration: none;
+  padding: 1em 1.3em;
+  color: white;
+
+}
+.step {
+  display: inline-block;
+  border-radius: 4px;
+  font-weight: 500;
+  padding: 1.4em 1.7em;
+  box-sizing: border-box;
+  text-align: center;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+  position: relative;
+  background: #338dbc;
+  color: white;
+}
+.canel{
+  background-color: #f83131;
+  padding: 1em 1.3em;
+}
+.address-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.left-side {
+  padding: 60px;
+}
+.left-side .title {
+  font-size: 30px;
+}
+.left-side .sub-title {
+  font-size: 20px;
+}
+.left-side form input,
+select {
+  padding: 13px !important;
+  border: 1px solid #00000038 !important;
+}
+.left-side form select:nth-child(2n) {
+  margin-right: 10px;
+  margin-left: 10px;
+}
