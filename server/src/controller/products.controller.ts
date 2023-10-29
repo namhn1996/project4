@@ -17,3 +17,11 @@ export const GetOneProduct = async (req: Request, res: Response) => {
   const product = productData;
   res.status(200).json({ data: product });
 };
+
+export const UpdateProduct = async (req: any, res: Response) => {
+  await productService.UpdateProduct(req, res);
+  res.json({
+    status: 200,
+    message: "Cập nhật sản phẩm thành công",
+  });
+};

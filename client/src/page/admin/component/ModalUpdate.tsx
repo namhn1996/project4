@@ -1,22 +1,28 @@
 import React, { useState } from "react";
-import { Input, Modal } from "antd";
+import { Input, Modal, Select } from "antd";
 import { vnd } from "../../../help";
 import axios from "axios";
+import instance from "../../../api/axios";
+import { Option } from "antd/es/mentions";
 
 interface ModalUpdateProps {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   handleSubmit: () => void;
+  fetchProducts: () => void;
   selectedProduct: any;
   setSelectedProduct: React.Dispatch<React.SetStateAction<any>>;
+  category: any;
 }
 
 const ModalUpdate: React.FC<ModalUpdateProps> = ({
   open,
   setOpen,
   handleSubmit,
+  fetchProducts,
   selectedProduct,
   setSelectedProduct,
+  category,
 }) => {
   // thêm ảnh vào clouddinary
   const cloud_name = "dr9fccacv";
@@ -39,7 +45,32 @@ const ModalUpdate: React.FC<ModalUpdateProps> = ({
       )
       .catch((err) => console.log(err));
   };
-  handleSubmit = () => {};
+  handleSubmit = async () => {
+    try {
+      const categoryFind = category.find(
+        (item: any) => item.name == selectedProduct.category
+      );
+      const product = {
+        ...selectedProduct,
+        category: categoryFind.category_id,
+      };
+      console.log(product);
+
+      await instance
+        .put(`products/${selectedProduct.id}`, product)
+        .then((res) => {
+          setOpen(false);
+          setSelectedProduct(null);
+          fetchProducts();
+          console.log(res.data.message);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <>
       <Modal
@@ -70,7 +101,7 @@ const ModalUpdate: React.FC<ModalUpdateProps> = ({
             />
             <label>Tên sản phẩm</label>
             <Input
-              className="py-2 my-2"
+              className="py-1 my-1"
               value={selectedProduct.name}
               onChange={(e) =>
                 setSelectedProduct({ ...selectedProduct, name: e.target.value })
@@ -78,7 +109,7 @@ const ModalUpdate: React.FC<ModalUpdateProps> = ({
             />{" "}
             <label>Giá sản phẩm</label>
             <Input
-              className="py-2 my-2"
+              className="py-1 my-1"
               value={selectedProduct.price}
               onChange={(e) =>
                 setSelectedProduct({
@@ -89,7 +120,7 @@ const ModalUpdate: React.FC<ModalUpdateProps> = ({
             />
             <label>Khuyến mãi</label>
             <Input
-              className="py-2 my-2"
+              className="py-1 my-1"
               value={selectedProduct.sale}
               onChange={(e) =>
                 setSelectedProduct({
@@ -100,7 +131,7 @@ const ModalUpdate: React.FC<ModalUpdateProps> = ({
             />{" "}
             <label>Tồn kho</label>
             <Input
-              className="py-2 my-2"
+              className="py-1 my-1"
               value={selectedProduct.count}
               onChange={(e) =>
                 setSelectedProduct({
@@ -109,6 +140,24 @@ const ModalUpdate: React.FC<ModalUpdateProps> = ({
                 })
               }
             />
+            <label>Hãng sản xuất</label>
+            <Select
+              className=""
+              value={selectedProduct.category}
+              onChange={(e) =>
+                setSelectedProduct({
+                  ...selectedProduct,
+                  category: e,
+                })
+              }
+            >
+              {category &&
+                category.map((e: any, i: any) => (
+                  <Option key={i} value={e.category_id}>
+                    {e.name}
+                  </Option>
+                ))}
+            </Select>
           </div>
           <div className="d-flex col-5" style={{ flexDirection: "column" }}>
             <h4>Chi tiết sản phẩm</h4>

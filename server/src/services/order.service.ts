@@ -77,16 +77,15 @@ export const updateStatus = async (req: any, res: any) => {
   try {
     const { id } = req.params;
     const status = req.body.status;
-    const [order]: any = await db.execute(`call webdienthoai.GetOneOrder(?)`, [
-      id,
-    ]);
-    const [row]: any = order;
-    // console.log("row", row)
-    const [product]: any =
-      await db.execute(`call webdienthoai.Product_Get_All();
-    `);
-    console.log("product", product)
- 
+    // const [order]: any = await db.execute(`call webdienthoai.GetOneOrder(?)`, [
+    //   id,
+    // ]);
+    // const [row]: any = order;
+    // // console.log("row", row)
+    // const [product]: any =
+    //   await db.execute(`call webdienthoai.Product_Get_All();
+    // `);
+    
 
     await db.execute(`call webdienthoai.UpdateOrderStatus(?,?)`, [status, id]);
     return res.json({

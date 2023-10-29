@@ -17,7 +17,7 @@ const Order = () => {
   };
   useEffect(() => {
     fetchOrders();
-  }, []);
+  }, [order]);
 
   const handleView = async (id: any) => {
     try {
@@ -43,7 +43,8 @@ const Order = () => {
       console.log(error);
     }
   };
-
+  console.log(order);
+  
   return (
     <>
       <div className="col py-3">

@@ -23,3 +23,51 @@ export const GetOneProduct = async (id: number) => {
     console.log(error);
   }
 };
+
+export const UpdateProduct = async (req: Request, res: Response) => {
+  try {
+    const {
+      product_id,
+      name,
+      price,
+      sale,
+      count,
+      category,
+      img,
+      screen,
+      os,
+      camara,
+      camaraFront,
+      cpu,
+      ram,
+      rom,
+      sim,
+      battery,
+    } = req.body as any;
+
+    const [product]: any = await db.execute(
+      `call webdienthoai.UpdateProduct(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
+      [
+        product_id,
+        name,
+        price,
+        sale,
+        count,
+        category,
+        img,
+        screen,
+        os,
+        camara,
+        camaraFront,
+        cpu,
+        ram,
+        rom,
+        sim,
+        battery,
+      ]
+    );
+    return product;
+  } catch (error) {
+    console.log(error);
+  }
+};

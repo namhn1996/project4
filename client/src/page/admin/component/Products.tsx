@@ -89,6 +89,17 @@ const Products = () => {
           </h4>
         </div>
         <div className="row">
+          <div className="col-1">
+            <button
+              className="btn btn-hover"
+              data-bs-toggle="modal1"
+              data-bs-target="#exampleModal1"
+              onClick={() => {
+              }}
+            >
+              <i className="fa-solid fa-plus fa-2x text-danger"></i>
+            </button>
+          </div>
           <div className="col-3">
             <select
               onChange={(e) => setSelectedCategory(e.target.value)}
@@ -248,8 +259,10 @@ const Products = () => {
           open={open}
           setOpen={setOpen}
           handleSubmit={handleSubmit}
+          fetchProducts={fetchProducts}
           selectedProduct={selectedProduct}
           setSelectedProduct={setSelectedProduct}
+          category={category}
         />
       )}
       <Pagination
