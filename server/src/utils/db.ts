@@ -5,7 +5,7 @@ const databaseConfig: PoolOptions = {
   database: "webdienthoai",
   port: 3306,
   user: "root",
-  password: "",
+  password: "123qwe",
   host: "localhost",
 };
 

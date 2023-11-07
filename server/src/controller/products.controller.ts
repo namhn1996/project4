@@ -25,3 +25,27 @@ export const UpdateProduct = async (req: any, res: Response) => {
     message: "Cập nhật sản phẩm thành công",
   });
 };
+
+export const PostComment = async (req: any, res: Response) => {
+  await productService.PostComment(req, res);
+  res.json({
+    status: 200,
+    message: "Thêm bình luận thành công",
+  });
+}
+
+export const PostProduct = async (req: any, res: Response) => {
+  await productService.PostProduct(req, res);
+  res.json({
+    status: 200,
+    message: "Thêm sản phẩm thành công",
+  });
+}
+
+export const DeleteProduct = async (req: any, res: Response) => {
+  await productService.DeleteProduct(req, res);
+  res.json({
+    status: 200,
+    message: "Xóa sản phẩm thành công",
+  });
+}

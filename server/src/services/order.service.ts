@@ -1,5 +1,6 @@
 import db from "../utils/db";
 import { Response } from "express";
+import * as productService from "../services/product.service";
 
 export const orderCreate = async (req: any, res: any) => {
   try {
@@ -62,8 +63,6 @@ export const getOneOrder = async (id: number, res: any) => {
   try {
     const data = await db.execute(`call webdienthoai.GetOneOrder(?)`, [id]);
     const [order]: any = data[0];
-    console.log(order);
-
     return res.json({
       status: 200,
       order,
@@ -77,16 +76,6 @@ export const updateStatus = async (req: any, res: any) => {
   try {
     const { id } = req.params;
     const status = req.body.status;
-    // const [order]: any = await db.execute(`call webdienthoai.GetOneOrder(?)`, [
-    //   id,
-    // ]);
-    // const [row]: any = order;
-    // // console.log("row", row)
-    // const [product]: any =
-    //   await db.execute(`call webdienthoai.Product_Get_All();
-    // `);
-    
-
     await db.execute(`call webdienthoai.UpdateOrderStatus(?,?)`, [status, id]);
     return res.json({
       status: 200,
@@ -100,10 +89,40 @@ export const updateStatus = async (req: any, res: any) => {
 export const orderDelete = async (req: any, res: any) => {
   try {
     const { id } = req.params;
+    const data = await db.execute(`call webdienthoai.GetOneOrder(?)`, [id]);
+    const [order]: any = data[0];
+    for (const o of order) {
+      const [pro] = await productService.GetOneProduct(o.product_id);
+      const item = pro.find((item: any) => item.product_id == o.product_id);
+      if (item) {
+        item.count = item.count + o.product_quantity;
+        await productService.UpdateProductByCount(item.count, item.product_id);
+      }
+    }
     await db.execute(`call webdienthoai.DeleteOrder(?)`, [id]);
     return res.json({
       status: 200,
       message: "Xóa thành công",
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getHistory = async (req: any, res: any) => {
+  try {
+    const { id } = req.params;
+    const data: any = await db.execute(
+      `call webdienthoai.GetAllOrderByUserId(${id})`
+    );
+    const orders = {
+      orders: data[0][0],
+      products: data[0][1],
+    };
+
+    return res.json({
+      status: 200,
+      data: orders,
     });
   } catch (error) {
     console.log(error);

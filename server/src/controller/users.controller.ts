@@ -2,7 +2,9 @@ import { Request, Response } from "express";
 import * as userService from "../services/user.service";
 
 export const createUser = async (req: Request, res: Response) => {
-  await userService.userCreate(res, req.body);
+  console.log("req.body", req.body);
+  
+ return await userService.userCreate(res, req.body);
 };
 export const login = async (req: Request, res: Response) => {
   const result = await userService.login(res, req.body);
@@ -27,3 +29,8 @@ export const updateStatus = async (req: Request, res: Response) => {
   );
   return result;
 };
+
+export const updateAvatar = async (req: Request, res: Response) => {
+  const result = await userService.updateAvatar(req, res);
+  return result;
+}

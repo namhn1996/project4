@@ -1,23 +1,25 @@
 import { User } from "./../entities/user.entities";
 import { Response } from "express";
-import * as bcrypt from "bcrypt";
+import bcrypt from "bcrypt";
 import { v4 as uuidv4 } from "uuid";
 import * as jwt from "jsonwebtoken";
 import db from "../utils/db";
+import { log } from "console";
 
 export const userCreate = async (res: Response, request: User) => {
   try {
+    console.log("start ma hoa");
+    console.log(request.passwords);
     // Mã hóa mật khẩu
-    const salt = bcrypt.genSaltSync(10);
+    const salt: any = bcrypt.genSaltSync(10);
 
     // Mã hóa mật khẩu lấy từ client
-    const hashPassword = bcrypt.hashSync(request.passwords, salt);
-
-    await db.execute(
-      `call webdienthoai.Create_User(?,?,?, 0);
-    `,
-      [request.username, request.email, hashPassword]
-    );
+    const hashPassword: any = bcrypt.hashSync(request.passwords, salt);
+    await db.execute(`call webdienthoai.Create_User(?,?,?,0)`, [
+      request.username,
+      request.email,
+      hashPassword,
+    ]);
     return res.status(201).json({
       status: 201,
       message: "Đăng ký thành công",
@@ -58,17 +60,25 @@ export const login = async (res: Response, request: User) => {
           message: "Mật khẩu sai",
         });
       } else {
-        let token = jwt.sign(
-          { data: { id: rows[0].user_id, email: rows[0].email } },
-          process.env.TOKEN_SECET as jwt.Secret,
-          { expiresIn: 10000000 }
-        );
-        return res.status(200).json({
-          status: 200,
-          message: "Đăng nhập thành công",
-          data: rows[0],
-          token: token,
-        });
+        if (rows[0].status === 1) {
+          return res.json({
+            status: 402,
+            message: `Tài khoản đã bị khóa
+            Vui lòng nạp 500k cho ADMIN để hỗ trợ mở khóa !!`,
+          });
+        } else {
+          let token = jwt.sign(
+            { data: { id: rows[0].user_id, email: rows[0].email } },
+            process.env.TOKEN_SECET as jwt.Secret,
+            { expiresIn: 10000000 }
+          );
+          return res.status(200).json({
+            status: 200,
+            message: "Đăng nhập thành công",
+            data: rows[0],
+            token: token,
+          });
+        }
       }
     }
   } catch (error) {
@@ -130,6 +140,7 @@ export const updateStatus = async (
   res: Response
 ) => {
   try {
+    
     await db.execute(`call UpdateStatus(?,?)`, [status, id]);
     return res.json({
       status: 200,
@@ -142,3 +153,17 @@ export const updateStatus = async (
     });
   }
 };
+
+export const updateAvatar = async (req: any, res: Response) => {
+  try {
+    const { id } = req.params;
+    const {avatarUser} = req.body
+    await db.execute(`call webdienthoai.UpdateAvatar(?,?)`, [avatarUser, id]);
+    return res.json({
+      status: 200,
+      message: "Thay đổi avatar thành công",
+    });
+  } catch (error) {
+   console.log(error)
+  }
+}
