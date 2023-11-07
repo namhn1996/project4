@@ -36,6 +36,13 @@ const Header: React.FC<IActiveCart> = ({ activeCart }) => {
       showMessage("error", "Bạn phải đăng nhập để vào giỏ hàng");
     }
   };
+  useEffect(() => {
+    if(user && user.status == 1){
+      showMessage("error", "Tài khoản của bạn đã bị khóa");
+      handleLogout()
+      navigate("/");
+    }
+  },[])
   return (
     <div className="a-navbar ">
       <nav className="navbar navbar-expand-lg bg-body-tertiary ">
@@ -117,17 +124,6 @@ const Header: React.FC<IActiveCart> = ({ activeCart }) => {
                         to={`/profile/${user.user_id}`}
                       >
                         <i className="fa-solid fa-user"></i> Thông tin tài khoản
-                      </NavLink>
-                    </button>
-                  </li>
-                  <li>
-                    <button className="dropdown-item" type="button">
-                      <NavLink
-                        className="nav-link"
-                        to={`/history/${user.user_id}`}
-                      >
-                        <i className="fa-solid fa-book-medical"></i> Lịch sử đơn
-                        hàng
                       </NavLink>
                     </button>
                   </li>

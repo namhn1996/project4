@@ -9,4 +9,5 @@ router.post("/login", userController.login);
 router.get("/", userController.getAllUsers);
 router.get("/:id", userController.getOneUser);
 router.put("/:id", userController.updateStatus);
+router.put("/avatar/:id", userController.updateAvatar);
 export default router;

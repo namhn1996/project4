@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import instance from "../../../api/axios";
-import { vnd } from "../../../help";
+import { deleteCart, showMessage, vnd } from "../../../help";
 
 const Order = () => {
   const [orders, setOrders] = useState([]);
@@ -27,24 +27,32 @@ const Order = () => {
       console.log(error);
     }
   };
-  const handleComfirm = async (id: any) => {
+  const handleComfirm = async (id: any, value: any) => {
+    console.log(value);
+    console.log(id);
+
     try {
-      await instance.put(`orders/${id}`, { status: statusOrder });
+      await instance.put(`orders/${id}`, { status: value });
       fetchOrders();
     } catch (error) {
       console.log(error);
     }
   };
-  const handleDelete = async (id: any) => {
-    try {
-      await instance.delete(`orders/${id}`);
-      fetchOrders();
-    } catch (error) {
-      console.log(error);
-    }
+  const handleDelete = (id: any, e: any) => {
+    deleteCart().then(async (result: any) => {
+      if (e.status === "Đang vận chuyển" || e.status === "Hoàn thành") {
+        showMessage("error", "Không thể xóa đơn hàng đã xác nhận !! ");
+      } else {
+        try {
+          await instance.delete(`orders/${id}`);
+          fetchOrders();
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    });
   };
-  console.log(order);
-  
+
   return (
     <>
       <div className="col py-3">
@@ -80,8 +88,7 @@ const Order = () => {
                         data-mdb-target="#staticBackdrop"
                         onClick={() => {
                           handleView(e.order_id);
-                        }}
-                      >
+                        }}>
                         <i className="fa-solid fa-eye fa-2x text-danger"></i>
                       </button>
                     </td>
@@ -119,11 +126,25 @@ const Order = () => {
                       <div className="text-center ms-5 me-5">
                         <select
                           className="form-select text-center mt-1 "
-                          defaultValue={e.status}
-                          onChange={(e) => {
-                            setStatusOrder(e.target.value);
-                          }}
-                        >
+                          value={e.status}
+                          onChange={(a: any) => {
+                            if (
+                              e.status === "Chờ xác nhận" &&
+                              a.target.value === "Đang vận chuyển"
+                            ) {
+                              handleComfirm(e.order_id, a.target.value);
+                            } else if (
+                              e.status === "Đang vận chuyển" &&
+                              a.target.value === "Hoàn thành"
+                            ) {
+                              handleComfirm(e.order_id, a.target.value);
+                            } else {
+                              showMessage(
+                                "error",
+                                `Đơn hàng ${e.status} không thể thay đổi`
+                              );
+                            }
+                          }}>
                           <option value="Chờ xác nhận">Chờ xác nhận</option>
                           <option value="Đang vận chuyển">
                             Đang vận chuyển
@@ -134,16 +155,8 @@ const Order = () => {
                     </td>
                     <td className="text-center">
                       <button
-                        className="btn btn-success"
-                        onClick={() => handleComfirm(e.order_id)}
-                      >
-                        Xác nhận
-                      </button>
-                      <hr />
-                      <button
                         className="btn btn-danger"
-                        onClick={() => handleDelete(e.order_id)}
-                      >
+                        onClick={() => handleDelete(e.order_id, e)}>
                         Hùy đơn hàng
                       </button>
                     </td>
@@ -162,8 +175,7 @@ const Order = () => {
           data-mdb-keyboard="false"
           tabIndex={-1}
           aria-labelledby="staticBackdropLabel"
-          aria-hidden="true"
-        >
+          aria-hidden="true">
           <div className="modal-dialog">
             <div className="modal-content">
               <div className="modal-header">

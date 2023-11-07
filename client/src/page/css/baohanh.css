@@ -1,27 +1,4 @@
-table {
-	border-collapse: collapse;
-	margin: 50px;
-	width: 90%;
-	height: 100%;
-	font-size: 14px;
-}
 
-td a {
-	display: block;
-	margin-left: 5px;
-	padding: 10px 0;
-	transition-duration: .2s; 
-	color: black;
-}
-
-td a:hover {
-	color: red;
-	margin-left: 10px;
-	text-decoration: underline;
-}
-
-/* những tr chẵn sẽ có màu khác */
-tr:nth-of-type(even) {background-color: #e6e4e4;}
 
 .header-table marquee {
 	height: 60px;

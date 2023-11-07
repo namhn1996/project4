@@ -28,7 +28,6 @@ export const requestMessage = (title: any, text: any) => {
 export const deleteCart = async () => {
   const result = await Swal.fire({
     title: "Bạn muốn xóa sản phẩm này?",
-    showDenyButton: true,
     showCancelButton: true,
     confirmButtonText: "Đồng ý !!",
   });

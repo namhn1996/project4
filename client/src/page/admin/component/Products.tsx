@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import Pagination from "./Pagination";
 import instance from "../../../api/axios";
-import { vnd } from "../../../help";
+import { deleteCart, showMessage, vnd } from "../../../help";
 import ModalUpdate from "./ModalUpdate";
+import ModalCreateProduct from "./ModalCreateProduct";
 
 const Products = () => {
   const [products, setProducts]: any = useState([]);
@@ -12,6 +13,7 @@ const Products = () => {
   const [selectedCategory, setSelectedCategory]: any = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [open, setOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const fetchProducts = async () => {
     try {
@@ -58,6 +60,24 @@ const Products = () => {
       console.log(error);
     }
   };
+  const handleDelete = async (id: any) => {
+    deleteCart().then(async (result: any) => {
+      if (result.isConfirmed) {
+        try {
+          await instance.delete(`products/${id}`).then((res) => {
+            fetchProducts();
+            showMessage("success", res.data.message);
+          }).catch((err) => {
+            console.log(err);
+          });
+        } catch (error) {
+          console.log(error);
+        }
+      } else if (result.isDenied) {
+        console.log("hủy");
+      }
+    })
+  }
   useEffect(() => {
     fetchProducts();
     fetchCategory();
@@ -77,8 +97,12 @@ const Products = () => {
   const onFinishFailed = (errorInfo: any) => {
     console.log("Failed:", errorInfo);
   };
+
   const handleSubmit = () => {
     setOpen(false);
+  };
+  const showModal = () => {
+    setIsModalOpen(true);
   };
   return (
     <div>
@@ -90,13 +114,7 @@ const Products = () => {
         </div>
         <div className="row">
           <div className="col-1">
-            <button
-              className="btn btn-hover"
-              data-bs-toggle="modal1"
-              data-bs-target="#exampleModal1"
-              onClick={() => {
-              }}
-            >
+            <button className="btn btn-hover" onClick={showModal}>
               <i className="fa-solid fa-plus fa-2x text-danger"></i>
             </button>
           </div>
@@ -104,8 +122,7 @@ const Products = () => {
             <select
               onChange={(e) => setSelectedCategory(e.target.value)}
               className="form-select"
-              aria-label="Default select example"
-            >
+              aria-label="Default select example">
               <option value="">Filter By Category</option>
               {category.length > 0 &&
                 category.map((e: any, i: any) => (
@@ -162,8 +179,7 @@ const Products = () => {
                         data-bs-target="#exampleModal"
                         onClick={() => {
                           setSelectedProduct(product);
-                        }}
-                      >
+                        }}>
                         <i className="fa-solid fa-eye fa-2x text-danger"></i>
                       </button>
                     </td>
@@ -172,10 +188,14 @@ const Products = () => {
                         className="btn btn-hover"
                         onClick={() => {
                           setOpen(true), setSelectedProduct(product);
-                        }}
-                      >
+                        }}>
                         {" "}
                         <i className="fa-solid fa-pencil fa-2x text-success"></i>
+                      </button>
+                      <button
+                        className="btn btn-hover"
+                        onClick={() => handleDelete(product.product_id)}>
+                        <i className="fa-solid fa-trash fa-2x text-danger"></i>
                       </button>
                     </td>
                   </tr>
@@ -189,8 +209,7 @@ const Products = () => {
         id="exampleModal"
         tabIndex={-1}
         aria-labelledby="exampleModalLabel"
-        aria-hidden="true"
-      >
+        aria-hidden="true">
         <div className="modal-dialog">
           <div className="modal-content">
             <div className="modal-header">
@@ -265,6 +284,12 @@ const Products = () => {
           category={category}
         />
       )}
+      <ModalCreateProduct
+        isModalOpen={isModalOpen}
+        setIsModalOpen={setIsModalOpen}
+        fetchProducts={fetchProducts}
+        category={category}
+      />
       <Pagination
         total={total}
         pageNumber={10}

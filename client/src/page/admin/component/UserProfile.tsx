@@ -3,6 +3,7 @@ import instance from "../../../api/axios";
 
 const UserProfile = () => {
   const [users, setUsers]: any = useState([]);
+  const user = JSON.parse(localStorage.getItem("user") as any) || {};
   const fectchUsers = async () => {
     try {
       const res = await instance.get("users");
@@ -16,20 +17,44 @@ const UserProfile = () => {
   }, []);
   const handleLocked = async (id: any) => {
     try {
-      await instance.put(`users/${id}`, { status: 1 });
+      console.log(id);
+      await instance
+        .put(`users/${id}`, { status: 1 })
+        .then((res) => {
+          console.log(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
       fectchUsers();
+      if (Object.keys(user).length > 0) {
+        const updateUser = {
+          ...user,
+          status: 1,
+        };
+
+        localStorage.setItem("user", JSON.stringify(updateUser));
+      }
     } catch (error) {
       console.log(error);
     }
   };
   const handleOpen = async (id: any) => {
     try {
+      console.log(id);
       await instance.put(`users/${id}`, { status: 0 });
       fectchUsers();
+      if (user) {
+        const updateUser = {
+          ...user,
+          status: 0,
+        };
+        localStorage.setItem("user", JSON.stringify(updateUser));
+      }
     } catch (error) {
       console.log(error);
     }
-  }
+  };
   return (
     <div className="py-3">
       <div className="row">
@@ -71,14 +96,12 @@ const UserProfile = () => {
                   <td>
                     <button
                       className={user.status == 0 ? "btn" : "btn btn-danger"}
-                      onClick={() => handleLocked(user.user_id)}
-                    >
+                      onClick={() => handleLocked(user.user_id)}>
                       Khóa
                     </button>
                     <button
                       className={user.status == 1 ? "btn" : "btn btn-success"}
-                      onClick={() => handleOpen(user.user_id)}
-                    >
+                      onClick={() => handleOpen(user.user_id)}>
                       Mở
                     </button>
                   </td>

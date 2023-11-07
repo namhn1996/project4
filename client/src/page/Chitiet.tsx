@@ -13,7 +13,8 @@ import Swal from "sweetalert2";
 
 const Chitiet = () => {
   const { id } = useParams() as any;
-  const userid: number = JSON.parse(localStorage.getItem("user")!).user_id;
+  const userid: any = JSON.parse(localStorage.getItem("user")!)?.user_id || [];
+
 
   const productStore = useSelector(
     (state: any) => state.products.products.product
@@ -30,20 +31,15 @@ const Chitiet = () => {
   useEffect(() => {
     getProduct();
     getCart();
-  }, [userid, id, activeCart]);
+  }, [ id, activeCart]);
 
   const handleCart = (id: number) => {
-    if (!userid) {
+    if (userid.length === 0) {
       showMessage("error", "Bạn phải đăng nhập để mua hàng");
     } else {
-      console.log("cartStore", cartStore);
-
       const productFindIndex: any = cartStore.findIndex(
         (item: any) => item.product_id === id
       );
-
-      console.log("productFind", productFindIndex);
-
       if (productFindIndex !== -1) {
         requestMessage(
           "Sản phẩm đã có trong giỏ hàng",
@@ -233,7 +229,7 @@ const Chitiet = () => {
       <div>
         <hr />
         <h1 className="text-center mb-5 mt-5">Bình Luận Của Khách Hàng </h1>
-        <Comment />
+        <Comment userid={userid} getProduct={getProduct} />
         <Footer />
       </div>
     </div>

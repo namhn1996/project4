@@ -40,10 +40,12 @@ const ModalUpdate: React.FC<ModalUpdateProps> = ({
         `https://api.cloudinary.com/v1_1/${cloud_name}/image/upload`,
         formData
       )
-      .then((res) =>
+      .then((res) =>{
         setSelectedProduct({ ...selectedProduct, img: res.data.url })
-      )
+        console.log(res.data.url);
+      })
       .catch((err) => console.log(err));
+      
   };
   handleSubmit = async () => {
     try {
@@ -54,7 +56,6 @@ const ModalUpdate: React.FC<ModalUpdateProps> = ({
         ...selectedProduct,
         category: categoryFind.category_id,
       };
-      console.log(product);
 
       await instance
         .put(`products/${selectedProduct.id}`, product)
@@ -160,8 +161,8 @@ const ModalUpdate: React.FC<ModalUpdateProps> = ({
             </Select>
           </div>
           <div className="d-flex col-5" style={{ flexDirection: "column" }}>
-            <h4>Chi tiết sản phẩm</h4>
-            <label>Tên sản phẩm</label>
+            <h4>Thông số sản phẩm</h4>
+            <label>Màn hình</label>
             <Input
               className="py-2 my-2"
               value={selectedProduct.screen}
@@ -172,7 +173,7 @@ const ModalUpdate: React.FC<ModalUpdateProps> = ({
                 })
               }
             />{" "}
-            <label>Tên sản phẩm</label>
+            <label>Hệ điều hành</label>
             <Input
               className="py-2 my-2"
               value={selectedProduct.os}
@@ -180,7 +181,7 @@ const ModalUpdate: React.FC<ModalUpdateProps> = ({
                 setSelectedProduct({ ...selectedProduct, os: e.target.value })
               }
             />{" "}
-            <label>Tên sản phẩm</label>
+            <label>Camera sau</label>
             <Input
               className="py-2 my-2"
               value={selectedProduct.camara}
@@ -191,7 +192,7 @@ const ModalUpdate: React.FC<ModalUpdateProps> = ({
                 })
               }
             />{" "}
-            <label>Tên sản phẩm</label>
+            <label>Camera trước</label>
             <Input
               className="py-2 my-2"
               value={selectedProduct.camaraFront}
@@ -202,7 +203,7 @@ const ModalUpdate: React.FC<ModalUpdateProps> = ({
                 })
               }
             />{" "}
-            <label>Tên sản phẩm</label>
+            <label>CPU</label>
             <Input
               className="py-2 my-2"
               value={selectedProduct.cpu}
@@ -210,7 +211,7 @@ const ModalUpdate: React.FC<ModalUpdateProps> = ({
                 setSelectedProduct({ ...selectedProduct, cpu: e.target.value })
               }
             />{" "}
-            <label>Tên sản phẩm</label>
+            <label>RAM</label>
             <Input
               className="py-2 my-2"
               value={selectedProduct.ram}
@@ -218,7 +219,7 @@ const ModalUpdate: React.FC<ModalUpdateProps> = ({
                 setSelectedProduct({ ...selectedProduct, ram: e.target.value })
               }
             />{" "}
-            <label>Tên sản phẩm</label>
+            <label>Bộ nhớ trong</label>
             <Input
               className="py-2 my-2"
               value={selectedProduct.rom}
@@ -226,7 +227,7 @@ const ModalUpdate: React.FC<ModalUpdateProps> = ({
                 setSelectedProduct({ ...selectedProduct, rom: e.target.value })
               }
             />{" "}
-            <label>Tên sản phẩm</label>
+            <label>Sim</label>
             <Input
               className="py-2 my-2"
               value={selectedProduct.sim}
@@ -234,7 +235,7 @@ const ModalUpdate: React.FC<ModalUpdateProps> = ({
                 setSelectedProduct({ ...selectedProduct, sim: e.target.value })
               }
             />{" "}
-            <label>Tên sản phẩm</label>
+            <label>Dung lượng pin</label>
             <Input
               className="py-2 my-2"
               value={selectedProduct.battery}
@@ -245,10 +246,11 @@ const ModalUpdate: React.FC<ModalUpdateProps> = ({
                 })
               }
             />{" "}
-            <label>Tên sản phẩm</label>
+            <label>Giá bán ra</label>
             <Input
               className="py-2 my-2"
               value={vnd(+selectedProduct.price * +(1 - selectedProduct.sale))}
+              readOnly
             />
           </div>
         </div>
