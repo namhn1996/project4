@@ -40,3 +40,8 @@ Chức năng **ADMIN**:
 
 ![image](https://github.com/namhn1996/project4/assets/130650832/62a408ec-df7d-477f-9ceb-6da619cdc903)
 
+Cảm ơn anh chị đã tham khảo, rất mong được sự góp ý từ mọi người !!
+
+Project By Nguyễn Phương Nam 10/2023
+Gmail: namhn1996@gmail.com
+
